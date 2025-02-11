@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Te Amo</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #1A1A2E;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+            color: #E0E0E0;
+            overflow-y: auto;
+            position: relative;
+        }
+        .container {
+            background-color: #16213E;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            max-width: 600px;
+            position: relative;
+            z-index: 2;
+        }
+        .title-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        h1 {
+            color: #9932CC;
+            margin-bottom: 20px;
+        }
+        .heart {
+            color: #8A2BE2;
+            font-size: 35px;
+            animation: pulse 1s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+        .image-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .left-image {
+            width: 300px;
+            height: 400px;
+            object-fit: cover;
+        }
+        .right-images {
+            display: flex;
+            flex-direction: column;
+        }
+        .right-images img {
+            width: 300px;
+            height: 200px;
+            object-fit: cover;
+        }
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+        .message-button {
+            background-color: #9932CC;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: transform 0.3s, background-color 0.3s;
+            margin: 10px 0;
+        }
+        .message-button:hover {
+            background-color: #8A2BE2;
+            transform: scale(1.05);
+        }
+        .hidden-message {
+            margin-top: 10px;
+            opacity: 0;
+            color: #D8BFD8;
+            font-size: 18px;
+            padding: 15px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+            font-weight: bold;
+            border: 2px solid #9932CC;
+            display: none;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .stars {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            overflow: hidden;
+            z-index: 1;
+        }
+        .star {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background-color: white;
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+            opacity: 0.8;
+            animation: twinkle 1.5s infinite alternate;
+        }
+        @keyframes twinkle {
+            from { opacity: 0.5; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1.1); }
+        }
+    </style>
+</head>
+<body>
+    <div class="stars"></div>
+    <div class="container">
+        <div class="title-container">
+            <h1>Para Mi Amor</h1>
+            <div class="heart">♥</div>
+        </div>
+        <div class="image-container">
+            <img src="imagen4.jpg" class="left-image">
+            <div class="right-images">
+                <img src="imagen1.jpg">
+                <img src="imagen2.jpg">
+            </div>
+        </div>
+        <div class="button-container">
+            <button class="message-button" onclick="showMessage()">Presiona para ver un mensaje especial</button>
+            <div id="hidden-message" class="hidden-message">
+                ¡Eres la persona más especial en mi vida!<br>
+                Cada día a tu lado es un regalo maravilloso.<br>
+                Te amo con todo mi corazón ❤️
+            </div>
+        </div>
+    </div>
+    <script>
+        function showMessage() {
+            const message = document.getElementById('hidden-message');
+            if (message.style.display === 'block') {
+                message.style.display = 'none';
+            } else {
+                message.style.display = 'block';
+                message.style.animation = "fadeIn 1s forwards";
+            }
+        }
+        function createStars() {
+            const starsContainer = document.querySelector('.stars');
+            for (let i = 0; i < 50; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                star.style.top = Math.random() * 100 + 'vh';
+                star.style.left = Math.random() * 100 + 'vw';
+                star.style.opacity = Math.random();
+                starsContainer.appendChild(star);
+            }
+        }
+        createStars();
+    </script>
+</body>
+</html>
