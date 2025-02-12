@@ -9,13 +9,14 @@
             background-color: #1A1A2E;
             display: flex;
             justify-content: center;
-            align-items: center;
-            height: 100vh;
+            align-items: flex-start;
+            min-height: 100vh;
             margin: 0;
             text-align: center;
             color: #E0E0E0;
-            overflow-y: auto;
             position: relative;
+            padding: 20px;
+            overflow: hidden;
         }
         .container {
             background-color: #16213E;
@@ -25,21 +26,35 @@
             max-width: 600px;
             position: relative;
             z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 30px;
+            max-height: 90vh; /* Ajuste para permitir scroll */
+            overflow-y: auto; /* Permite hacer scroll */
         }
         .title-container {
             display: flex;
             justify-content: center;
             align-items: center;
             gap: 10px;
+            margin-bottom: 20px;
+            position: relative;
         }
         h1 {
             color: #9932CC;
-            margin-bottom: 20px;
+            margin: 0;
+            font-size: 24px;
         }
         .heart {
             color: #8A2BE2;
             font-size: 35px;
             animation: pulse 1s infinite;
+            position: relative;
+            top: -5px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            user-select: none;
         }
         @keyframes pulse {
             0%, 100% { transform: scale(1); }
@@ -47,9 +62,19 @@
         }
         .image-container {
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             justify-content: center;
             margin-bottom: 20px;
+            gap: 5px; /* Reducir la separación entre las imágenes */
+        }
+        .left-image, .right-images img {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .left-image:hover, .right-images img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(153, 50, 204, 0.5);
+            filter: brightness(1.1);
         }
         .left-image {
             width: 300px;
@@ -59,6 +84,7 @@
         .right-images {
             display: flex;
             flex-direction: column;
+            gap: 0;
         }
         .right-images img {
             width: 300px;
@@ -66,10 +92,11 @@
             object-fit: cover;
         }
         .button-container {
+            width: 100%;
             display: flex;
             flex-direction: column;
             align-items: center;
-            position: relative;
+            margin-top: 20px;
         }
         .message-button {
             background-color: #9932CC;
@@ -87,32 +114,36 @@
             transform: scale(1.05);
         }
         .hidden-message {
-            margin-top: 10px;
+            margin-top: 20px;
+            height: 0;
             opacity: 0;
             color: #D8BFD8;
             font-size: 18px;
-            padding: 15px;
+            padding: 0;
             background-color: rgba(255, 255, 255, 0.1);
             border-radius: 10px;
-            width: 90%;
+            width: 100%;
             max-width: 500px;
             text-align: center;
             font-weight: bold;
             border: 2px solid #9932CC;
-            display: none;
+            overflow: hidden;
+            transition: all 0.5s ease-in-out;
         }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
+        .hidden-message.show {
+            height: auto;
+            opacity: 1;
+            padding: 15px;
         }
         .stars {
-            position: absolute;
+            position: fixed;
             width: 100%;
             height: 100%;
             top: 0;
             left: 0;
             overflow: hidden;
             z-index: 1;
+            pointer-events: none;
         }
         .star {
             position: absolute;
@@ -127,53 +158,135 @@
             from { opacity: 0.5; transform: scale(0.9); }
             to { opacity: 1; transform: scale(1.1); }
         }
+        
+        /* Estilos para el contador */
+        .counter-container {
+            background: rgba(153, 50, 204, 0.1);
+            border: 2px solid #9932CC;
+            border-radius: 15px;
+            padding: 15px;
+            margin-top: 60px;  /* Aumentar separación con el layout */
+            width: 100%;
+            max-width: 500px;
+            backdrop-filter: blur(5px);
+        }
+        .counter-title {
+            color: #9932CC;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        .counter {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* 3 columnas para días, meses y años */
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .time-unit {
+            background: rgba(153, 50, 204, 0.2);
+            padding: 10px;
+            border-radius: 10px;
+        }
+        .time-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #FFB6C1;
+        }
+        .time-label {
+            font-size: 14px;
+            color: #D8BFD8;
+            margin-top: 5px;
+        }
     </style>
 </head>
 <body>
     <div class="stars"></div>
     <div class="container">
         <div class="title-container">
-            <h1>Para Mi Amor</h1>
-            <div class="heart">♥</div>
+            <h1>Para La Persona Más Importante De Mi Mundo</h1>
+            <div class="heart" onclick="changeHeartColor(this)">♥</div>
         </div>
         <div class="image-container">
-            <img src="imagen4.jpg" class="left-image">
+            <img src="imagen4.jpg" class="left-image" alt="Imagen principal">
             <div class="right-images">
-                <img src="imagen1.jpg">
-                <img src="imagen2.jpg">
+                <img src="imagen1.jpg" alt="Imagen 1">
+                <img src="imagen2.jpg" alt="Imagen 2">
+            </div>
+        </div>
+        <div class="counter-container">
+            <div class="counter-title">Tiempo Juntos ❤️</div>
+            <div class="counter">
+                <div class="time-unit">
+                    <div id="years" class="time-value">0</div>
+                    <div class="time-label">Años</div>
+                </div>
+                <div class="time-unit">
+                    <div id="months" class="time-value">0</div>
+                    <div class="time-label">Meses</div>
+                </div>
+                <div class="time-unit">
+                    <div id="days" class="time-value">0</div>
+                    <div class="time-label">Días</div>
+                </div>
             </div>
         </div>
         <div class="button-container">
-            <button class="message-button" onclick="showMessage()">Presiona para ver un mensaje especial</button>
+            <button class="message-button" onclick="showMessage()">Oprimir</button>
             <div id="hidden-message" class="hidden-message">
-                ¡Eres la persona más especial en mi vida!<br>
-                Cada día a tu lado es un regalo maravilloso.<br>
-                Te amo con todo mi corazón ❤️
+                Sos la persona más especial en mi vida<br>
+                Y quiero agradecerte por los momentos a tu lado, por estar para mi en todas y por hacerme feliz sin importar que.<br>
+                Te amo con todo mi ser ❤️
             </div>
         </div>
     </div>
     <script>
+        // Función para actualizar el contador
+        function updateCounter() {
+            const startDate = new Date(2022, 10, 13);  // Ajusta la fecha de inicio aquí
+            const now = new Date();
+            const diff = now - startDate;
+
+            // Cálculos de tiempo
+            const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 365));
+            const months = Math.floor((diff % (1000 * 60 * 60 * 24 * 365)) / (1000 * 60 * 60 * 24 * 30.44));
+            const days = Math.floor((diff % (1000 * 60 * 60 * 24 * 30.44)) / (1000 * 60 * 60 * 24));
+
+            // Actualizar elementos
+            document.getElementById('years').textContent = years;
+            document.getElementById('months').textContent = months;
+            document.getElementById('days').textContent = days;
+        }
+
         function showMessage() {
             const message = document.getElementById('hidden-message');
-            if (message.style.display === 'block') {
-                message.style.display = 'none';
-            } else {
-                message.style.display = 'block';
-                message.style.animation = "fadeIn 1s forwards";
-            }
+            message.classList.toggle('show');
         }
+
         function createStars() {
             const starsContainer = document.querySelector('.stars');
-            for (let i = 0; i < 50; i++) {
+            for (let i = 0; i < 150; i++) {
                 const star = document.createElement('div');
                 star.classList.add('star');
                 star.style.top = Math.random() * 100 + 'vh';
                 star.style.left = Math.random() * 100 + 'vw';
                 star.style.opacity = Math.random();
+                const size = 2 + Math.random() * 6;
+                star.style.width = size + 'px';
+                star.style.height = size + 'px';
+                star.style.animationDuration = (1 + Math.random()) + 's';
                 starsContainer.appendChild(star);
             }
         }
+
+        function changeHeartColor(heart) {
+            const colors = ['#FF69B4', '#FF1493', '#FF0000', '#FF4500', '#FFA500', '#9932CC', '#8A2BE2'];
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            heart.style.color = randomColor;
+        }
+
+        // Iniciar funciones
         createStars();
+        updateCounter();
+        setInterval(updateCounter, 1000);
     </script>
 </body>
 </html>
