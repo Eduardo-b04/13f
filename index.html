@@ -241,14 +241,25 @@
     <script>
         // Función para actualizar el contador
         function updateCounter() {
-            const startDate = new Date(2022, 10, 13);  // Ajusta la fecha de inicio aquí
+            const startDate = new Date(2022, 10, 13);  // Fecha de inicio (2022-11-13)
             const now = new Date();
-            const diff = now - startDate;
 
-            // Cálculos de tiempo
-            const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 365));
-            const months = Math.floor((diff % (1000 * 60 * 60 * 24 * 365)) / (1000 * 60 * 60 * 24 * 30.44));
-            const days = Math.floor((diff % (1000 * 60 * 60 * 24 * 30.44)) / (1000 * 60 * 60 * 24));
+            let years = now.getFullYear() - startDate.getFullYear();
+            let months = now.getMonth() - startDate.getMonth();
+            let days = now.getDate() - startDate.getDate();
+
+            // Ajustar meses si es negativo
+            if (months < 0) {
+                years--;
+                months += 12;
+            }
+
+            // Ajustar días si es negativo
+            if (days < 0) {
+                months--;
+                const previousMonth = new Date(now.getFullYear(), now.getMonth(), 0); // Último día del mes anterior
+                days += previousMonth.getDate();
+            }
 
             // Actualizar elementos
             document.getElementById('years').textContent = years;
@@ -289,4 +300,4 @@
         setInterval(updateCounter, 1000);
     </script>
 </body>
-</html>
+</html
